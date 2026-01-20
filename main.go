@@ -2,20 +2,21 @@ package main
 
 import (
 	"go-project/infra"
-
-	"gorm.io/gorm"
+	"go-project/setup"
 )
 
 var (
-	DatabaseDomain *gorm.DB
-	boot           infra.Bootstrap
+	boot infra.Bootstrap
 )
 
 func main() {
 	env := boot.LoadEnv()
 
-	db := boot.SetupDatabase(env)
-	DatabaseDomain = db
+	boot.SetupDatabase(env)
 
-	boot.RunServer()
+	server := boot.RunServer()
+
+	setup.PrepareRoutes(server)
+
+	server.Run(":8080")
 }

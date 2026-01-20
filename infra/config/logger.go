@@ -5,7 +5,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func Logger() *zap.Logger {
+func Logger() *zap.SugaredLogger {
 	logger, err := zap.NewProduction()
 
 	if err != nil {
@@ -18,5 +18,5 @@ func Logger() *zap.Logger {
 
 	defer logger.Sync()
 
-	return logger
+	return logger.Sugar()
 }

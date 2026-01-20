@@ -18,12 +18,12 @@ func (b *Bootstrap) LoadEnv() *config.Env {
 	return env
 }
 
-func (b *Bootstrap) RunServer() {
+func (b *Bootstrap) RunServer() *gin.Engine {
 	router := gin.Default()
 
 	config.Logger().Info("Starting server...")
 
-	router.Run(":8080")
+	return router
 }
 
 func (b *Bootstrap) SetupDatabase(env *config.Env) *gorm.DB {

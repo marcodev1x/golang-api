@@ -12,6 +12,10 @@ type Database struct {
 	Client *gorm.DB
 }
 
+var (
+	DomainDatabase *gorm.DB
+)
+
 func (d *Database) Connect(data *config.DatabaseConfig) (*gorm.DB, error) {
 	account := mysql.Config{
 		DSN: data.User + ":" + data.Password + "@tcp(" + data.Host + ":" + data.Port + ")/" + data.Name + "?charset=utf8mb4&parseTime=True&loc=Local",
@@ -25,6 +29,7 @@ func (d *Database) Connect(data *config.DatabaseConfig) (*gorm.DB, error) {
 	}
 
 	d.Client = db
+	DomainDatabase = db
 
 	return d.Client, nil
 }
