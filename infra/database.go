@@ -1,7 +1,7 @@
 package infra
 
 import (
-	"go-project/infra/config"
+	"shortner-url/infra/config"
 
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"

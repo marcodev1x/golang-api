@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-project/infra"
-	"go-project/setup"
+	"shortner-url/infra"
+	"shortner-url/setup"
 )
 
 var (
@@ -15,6 +15,8 @@ func main() {
 	boot.SetupDatabase(env)
 
 	server := boot.RunServer()
+
+	boot.SetupRedis(env)
 
 	setup.PrepareRoutes(server)
 

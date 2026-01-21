@@ -8,6 +8,7 @@ import (
 
 type Env struct {
 	DatabaseConfig *DatabaseConfig
+	RedisConfig    *RedisConfig
 }
 
 func LoadEnv() *Env {
@@ -28,6 +29,12 @@ func LoadEnv() *Env {
 			User:     getEnv("DATABASE_USER"),
 			Password: getEnv("DATABASE_PASSWORD"),
 			Name:     getEnv("DATABASE_NAME"),
+		},
+		RedisConfig: &RedisConfig{
+			Addr:     getEnv("REDIS_ADDR_URL"),
+			Password: getEnv("REDIS_PASSWORD"),
+			DB:       getEnv("REDIS_DB"),
+			Protocol: getEnv("REDIS_PROTOCOL"),
 		},
 	}
 }

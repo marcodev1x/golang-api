@@ -7,3 +7,10 @@ type DatabaseConfig struct {
 	Password string
 	Name     string
 }
+
+type RedisConfig struct {
+	Addr     string
+	Password string
+	DB       string
+	Protocol string
+}

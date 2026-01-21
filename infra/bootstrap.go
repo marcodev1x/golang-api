@@ -1,9 +1,11 @@
 package infra
 
 import (
-	"go-project/infra/config"
+	"shortner-url/infra/config"
+	"shortner-url/internal"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -35,6 +37,18 @@ func (b *Bootstrap) SetupDatabase(env *config.Env) *gorm.DB {
 
 		return nil
 	}
+
+	return instance
+}
+
+func (b *Bootstrap) SetupRedis(env *config.Env) *redis.Client {
+	instance := internal.Redis(env)
+
+	if instance == nil {
+		return nil
+	}
+
+	config.Logger().Info("Redis connected")
 
 	return instance
 }
