@@ -31,10 +31,7 @@ func (r *UrlRest) FindUrlByHashedId(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"url": url.ShortenedUrl,
-	})
-
+	internal.SendResponse(c, 200, url)
 }
 
 func (r *UrlRest) CreateUrl(c *gin.Context) {
@@ -52,7 +49,5 @@ func (r *UrlRest) CreateUrl(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, gin.H{
-		"created": created,
-	})
+	internal.SendResponse(c, 201, created)
 }

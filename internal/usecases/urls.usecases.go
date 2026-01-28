@@ -2,27 +2,41 @@ package usecases
 
 import (
 	"encoding/json"
+
 	"shortner-url/internal"
 	"shortner-url/internal/domain"
 	"shortner-url/internal/helpers"
-	"shortner-url/internal/repository/mysql"
 	"time"
 )
 
-type UrlUsecase struct {
-	repository *mysql.UrlRepository
-	cache      *RedisUsecase
+type UrlRepository interface {
+	UpdateUrl(url *domain.Urls) error
+	FindUrlByHashedId(hashedId, ref string) (*domain.Urls, error)
+	CreateUrl(url, hashedDomain string, expiresAt *time.Time, ref string) (*domain.Urls, error)
 }
 
-func NewUrlUseCase(repository *mysql.UrlRepository, redis *RedisUsecase) *UrlUsecase {
-	return &UrlUsecase{repository, redis}
+type Cache interface {
+	Get(key string) (string, error)
+	Set(key string, value string, ttl time.Duration) error
+}
+
+type UrlUsecase struct {
+	repository UrlRepository
+	cache      Cache
+}
+
+func NewUrlUseCase(repo UrlRepository, cache Cache) *UrlUsecase {
+	return &UrlUsecase{
+		repository: repo,
+		cache:      cache,
+	}
 }
 
 func (u *UrlUsecase) UpdateUrl(url *domain.Urls) error {
 	err := u.repository.UpdateUrl(url)
 
 	if err != nil {
-		return err
+		return internal.NewAPIError("Error updating url", 500, 100)
 	}
 
 	return nil
@@ -49,7 +63,7 @@ func (u *UrlUsecase) FindUrlByHashedId(hashedId string, ref string) (*domain.Url
 	url, err := u.repository.FindUrlByHashedId(hashedId, ref)
 
 	if err != nil {
-		return nil, err
+		return nil, internal.NewAPIError("Error trying to find url", 500, 480)
 	}
 
 	if url == nil {

@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"shortner-url/internal/domain"
+	"shortner-url/internal/usecases"
 	"time"
 
 	"gorm.io/gorm"
@@ -11,7 +12,7 @@ type UrlRepository struct {
 	db *gorm.DB
 }
 
-func NewUrlRepository(db *gorm.DB) *UrlRepository {
+func NewUrlRepository(db *gorm.DB) usecases.UrlRepository {
 	return &UrlRepository{db}
 }
 
